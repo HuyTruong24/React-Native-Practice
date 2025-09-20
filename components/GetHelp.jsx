@@ -24,8 +24,8 @@ const data = [
 function GetHelp() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{padding: 16}}>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
+      <SafeAreaView>
+        <ScrollView style={{padding: 16}} contentInsetAdjustmentBehavior="automatic">
           {data.map((item, index) => <ProfileItemHolder key={item.id} id={item.id} name={item.name} iconComponent={item.iconComponent} onClick={() => {}}/>)}
           <Text style={ {fontSize: 42, padding: 12,}}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

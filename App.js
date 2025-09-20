@@ -12,6 +12,7 @@ import { StackScreen } from "react-native-screens";
 import Logout from "./screens/Logout";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import Privacy from "./components/Privacy";
+import LogoutTemp from "./screens/LogoutTemp";
 
 const Stack = createNativeStackNavigator();
 const options = { headerShown: false };
@@ -21,7 +22,7 @@ function RootStack() {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name={Constants.Login} component={Login} />
       <Stack.Screen name={Constants.Registration} component={Registration} />
-      <Stack.Screen name={Constants.Logout} component={Logout} />
+      <Stack.Screen name={Constants.Logout} component={LogoutTemp} />
       <Stack.Screen name={Constants.Home} component={Home} />
       <Stack.Screen
         name={Constants.GetHelp}

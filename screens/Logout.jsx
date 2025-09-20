@@ -11,12 +11,13 @@ export default function Logout() {
             }}  */
   
   return (
-    <View style={styles.container}>
-          <Text>Your session has expired. Please log in again</Text>
-          <Pressable style={styles.pressable}  > 
-              <Text>Log in again</Text>
-          </Pressable>
-    </View>
+    /*<View style={styles.container}>
+        <Text>Your session has expired. Please log in again</Text>
+        <Pressable style={styles.pressable}  > 
+            <Text>Log in again</Text>
+        </Pressable>
+    </View>*/
+    <Text>Log in again</Text>
   )
 }
 const styles = StyleSheet.create({

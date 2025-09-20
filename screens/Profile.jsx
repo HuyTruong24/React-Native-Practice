@@ -63,15 +63,25 @@ const belowDivider = [
 ]
 
 
-export default function Profile({navigation, route}) {
-  //console.log(route);
+export default function Profile(props) {
+  const {navigation, route} = props
 
+  console.log(props)
+  console.log(navigation)
+  const onLogout = () => {
+      navigation.reset({
+          index: 0,
+          routes: [{ name: Constants.Logout }],
+      });
+  }
   const onClick = (id) => {
     if(id === Constants.GetHelp) {
       navigation.navigate(Constants.GetHelp)
     } else if(id === Constants.Privacy) {
       navigation.navigate(Constants.Privacy)
-    } else {
+    } else if(id === Constants.Logout) {
+      onLogout()
+    }else {
       Alert.alert("Clicked!")
     }
   }

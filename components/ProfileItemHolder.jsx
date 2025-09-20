@@ -8,7 +8,7 @@ function ProfileItemHolder(props) {
     <TouchableHighlight 
         style={styles.card} 
         onPress={() => onClick(id)} 
-        underlayColor={'#d5d5d5ff'} 
+        underlayColor='#d5d5d5ff'
         activeOpacity={1}>
          <View style={styles.container}>
             {iconComponent}
