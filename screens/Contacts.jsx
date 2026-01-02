@@ -102,12 +102,11 @@ function Contacts() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={[styles.container, { backgroundColor: isOpen ? "#fff" : "#fff"}]}>
-        <Text style={styles.recents}>Recents</Text>
         <FlatList
           data={data}
           renderItem={({item, index}) => <ContactHolder userContactInfo={{id: item.id, name: item.name, phoneNumber: item.phoneNumber}} onPressInfo={onPressInfo} index={index}/>}
           keyExtractor={item => item.id}
-          
+          ListHeaderComponent={<Text style={styles.recents}>Recents</Text>}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
         />
 

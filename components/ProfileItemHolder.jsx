@@ -10,7 +10,7 @@ function ProfileItemHolder(props) {
         onPress={() => onClick(id)} 
         underlayColor='#d5d5d5ff'
         activeOpacity={1}>
-         <View style={styles.container}>
+        <View style={styles.container}>
             {iconComponent}
             <Text style={styles.title}>{name}</Text>
             {hasArrow && <MaterialIcons name="keyboard-arrow-right" size={24}/>}
