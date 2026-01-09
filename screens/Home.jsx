@@ -19,6 +19,7 @@ import ReactNative from "./ReactNative";
 
 const Tab = createBottomTabNavigator();
 const ProfileStack = createNativeStackNavigator()
+const TAB_BAR_HEIGHT = 100
 export default function Home() {
   const dimensions = useWindowDimensions()
   const { width, height } = dimensions
@@ -50,7 +51,7 @@ export default function Home() {
         },
         tabBarActiveTintColor: 'blue', // Color for active tab icon
 
-        tabBarStyle: { position: "absolute" , height: 100, paddingBottom: 10, paddingTop: 10 },
+        tabBarStyle: { position: "absolute" , height: TAB_BAR_HEIGHT, paddingBottom: 10, paddingTop: 10 },
         tabBarBackground: () => (
           <BlurView tint="systemUltraThinMaterialDark" intensity={10} style={StyleSheet.absoluteFillObject} />
         ), 
@@ -60,7 +61,7 @@ export default function Home() {
       })}
     >
         <Tab.Screen name={Constants.HomeTab} component={HomeTab}  options={{ tabBarLabel: "Home", tabBarBadge: 3, headerTitle: "Home" }} />
-        <Tab.Screen name={Constants.ContactTab} component={Contacts} options={{ tabBarLabel: "Contacts", tabBarBadge: 2, headerTitle: "Contacts"  }} />
+        <Tab.Screen name={Constants.ContactTab} initialParams={{tabBarHeight: TAB_BAR_HEIGHT}} component={Contacts} options={{ tabBarLabel: "Contacts", tabBarBadge: 2, headerTitle: "Contacts"  }} />
         <Tab.Screen name={Constants.NotificationTab} 
                     component={Notification} 
                     options={{ 

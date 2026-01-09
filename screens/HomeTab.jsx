@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, View, TouchableOpacity, Image, Text, FlatList, SafeAreaView, TouchableHighlight, Animated } from "react-native";
+import React, { useCallback } from 'react'
+import { StyleSheet, Button, View, TouchableOpacity, Image, Text, FlatList, SafeAreaView, TouchableHighlight, Animated, TouchableWithoutFeedback } from "react-native";
 import Constants from '../constants/Constants';
 import { Feather, MaterialIcons } from '@expo/vector-icons' 
 import axios from 'axios';
@@ -109,7 +109,7 @@ export default function HomeTab({ navigation }) {
     const sheetRef = React.useRef(null);
     const [games, setGames] = React.useState(fixed)
     const [sortUpState, setSortUpStateState] = React.useState({sortByItem: { renderName: null, value: null }, isUp: true})
-    const [filters, setFilters] = React.useState({selectedPlatform: null, selectedGenres: []})
+    const [filters, setFilters] = React.useState({selectedPlatform: "all", selectedGenres: []})
     const rotateAnim = React.useRef(new Animated.Value(0)).current
 
     const {sortByItem, isUp} = sortUpState
@@ -147,10 +147,9 @@ export default function HomeTab({ navigation }) {
         setSortUpStateState({...sortUpState, isUp: !isUp})
     }
 
-    const onFiltersResult = ({selectedPlatform, selectedGenres}) => {
+    const onFiltersResult = useCallback(({selectedPlatform, selectedGenres}) => {
         setFilters({selectedPlatform, selectedGenres})
-    }
-    
+    }, []);
 
    
     React.useEffect(() => {
@@ -166,14 +165,34 @@ export default function HomeTab({ navigation }) {
     
     console.log(games)
     console.log(sortByItem, isUp)
-     console.log("Filters applied:", filters.selectedPlatform, filters.selectedGenres);
-   return (
+    console.log("Filters applied:", filters.selectedPlatform, filters.selectedGenres);
+
+    const filterItems = []
+    selectedPlatform && selectedPlatform !== "all" ? filterItems.push(selectedPlatform) : null
+    selectedGenres.length > 0 ? filterItems.push(...selectedGenres) : null
+
+    const FilterBoxes = React.useMemo(() => filterItems.map((item, i) => (
+        <TouchableWithoutFeedback key={i}>
+            <View style={[styles.filter_box, {flexDirection: "row", alignItems: "center", gap: 6}]}>
+                <Text style={styles.filter_box_text}>{item}</Text>
+                <MaterialIcons name='close' size={18} color="#fafafaff" onPress={() => {
+                    if (item === selectedPlatform) {
+                        setFilters({...filters, selectedPlatform: null})
+                    } else {
+                        const filteredGenres = selectedGenres.filter(genre => genre !== item)
+                        setFilters({...filters, selectedGenres: filteredGenres})
+                    }
+                }}/>
+            </View>
+        </TouchableWithoutFeedback>
+    )), [filterItems]);
+    return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
             <View style={{ flex: 1, padding: 16 }}>
                 <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 12 }}>
                     Featured Games
                 </Text>
-                <View style={{ paddingVertical: 15, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                <View style={{ paddingVertical: 15, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <TouchableHighlight style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 }} onPress={onFilter} underlayColor="#d4d4d4ff">
                         <View style={{ flexDirection: "row",alignItems: "center",}}>
                             <Text style={{ fontSize: 15 }}>Filter  </Text>
@@ -210,6 +229,7 @@ export default function HomeTab({ navigation }) {
                                 </View>
                     }
                 </View>
+                <View style={styles.filter_layout}>{FilterBoxes}</View>
                 {games && <FlatList 
                     data={games} 
                     keyExtractor={item => item.id} 
@@ -218,11 +238,29 @@ export default function HomeTab({ navigation }) {
                     ListFooterComponent = {() => <View style={{ height: 50 }} />}
                     />}
             </View>
-            <FilterBottomSheet sheetRef={sheetRef} onFilters={onFiltersResult} />
+            <FilterBottomSheet sheetRef={sheetRef} onFilters={onFiltersResult} remainingFilterItems={{platform: selectedPlatform, genres: selectedGenres}} />
         </SafeAreaView>
     );
 }
-
+const styles = StyleSheet.create({
+    filter_layout: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 10,
+        paddingBottom: 20,    
+        paddingHorizontal: 10,
+    },
+    filter_box: {
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        backgroundColor: "#2a2a2aff",
+        borderRadius: 10,
+    },
+    filter_box_text: {
+        color: "#fff",
+        fontWeight: "bold"
+    },
+});
  /*<View style={{ padding: 12 }}>
                 <Image
                     source={{ uri: item.thumbnail }}

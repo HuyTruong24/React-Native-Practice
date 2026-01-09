@@ -23,7 +23,7 @@ const DATA = [
 ];
 const emptyList = []
 function ReactNative() {
-    const bottomTabHeight = useBottomTabBarHeight()
+  const bottomTabHeight = useBottomTabBarHeight()
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['top']}>

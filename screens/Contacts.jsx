@@ -1,9 +1,9 @@
-import React from 'react'
-import { View, Text, RefreshControl, Alert, FlatList, StyleSheet, ImageBackground } from 'react-native'
+import React, { useCallback } from 'react'
+import { View, Text, RefreshControl, Alert, FlatList, StyleSheet, ImageBackground, Animated, LayoutAnimation, Platform, UIManager } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, Feather, MaterialIcons } from '@expo/vector-icons'
 import MyBottomSheet from '../components/MyBottomSheet'
 
 import ContactHolder from '../components/ContactHolder'
@@ -54,11 +54,18 @@ const data = [
     phoneNumber: '123-456-7890'
   },
 ]
-function Contacts() {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+function Contacts(props) {
+  const tabBarHeight = props.route.params?.tabBarHeight || 500;
   const sheetRef = React.useRef(null);
+  const [contacts, setContacts] = React.useState(data);
   const [userContactInfo , setUserContactInfo] = React.useState({})
   const [refreshing, setRefreshing] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [selectedContacts, setSelectedContacts] = React.useState([]);
 
   
 
@@ -66,6 +73,9 @@ function Contacts() {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      setContacts(data);
+      setIsEditing(false);
+      setSelectedContacts([]);
     }, 2000);
   }, [])
 
@@ -78,11 +88,35 @@ function Contacts() {
    setUserContactInfo(data[index])
   };
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setIsOpen(false)
+  }, []);
+  const onDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, []);
+
+  const onEditIcon = () => {
+    LayoutAnimation.configureNext({
+      duration: 5000,
+      create: {type: 'linear', property: 'opacity'},
+      update: {type: 'spring', springDamping: 0.4},
+      delete: {type: 'linear', property: 'opacity'},
+    });
+    if (isEditing) {
+      setContacts(prevContacts => 
+        prevContacts.filter(contact => !selectedContacts.includes(contact.id))
+      );
+      setSelectedContacts([]);
+    }
+    setIsEditing(prev => !prev);
   }
-  const onDismiss = () => {
-    setIsOpen(false)
+
+  const onSelectContact = (contactId) => {
+    setSelectedContacts(prev => [...prev, contactId]);
+  }
+
+  const onDeselectContact = (contactId) => {
+    setSelectedContacts(prev => prev.filter(id => id !== contactId));
   }
 
   /*const Item = ({name, phoneNumber}) => (
@@ -103,10 +137,25 @@ function Contacts() {
     <SafeAreaProvider>
       <SafeAreaView style={[styles.container, { backgroundColor: isOpen ? "#fff" : "#fff"}]}>
         <FlatList
-          data={data}
-          renderItem={({item, index}) => <ContactHolder userContactInfo={{id: item.id, name: item.name, phoneNumber: item.phoneNumber}} onPressInfo={onPressInfo} index={index}/>}
+          data={contacts}
+          renderItem={({item, index}) => (
+            <ContactHolder 
+              userContactInfo={{id: item.id, name: item.name, phoneNumber: item.phoneNumber}} 
+              onPressInfo={onPressInfo} 
+              index={index} 
+              isEditing={isEditing} 
+              onSelectContact={onSelectContact} 
+              onDeselectContact={onDeselectContact}
+            />
+          )}
           keyExtractor={item => item.id}
-          ListHeaderComponent={<Text style={styles.recents}>Recents</Text>}
+          ListHeaderComponent={
+            <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+              <Text style={styles.recents}>Recents</Text>
+              <MaterialIcons name={isEditing ? "done" : "mode-edit"} size={30} color="#ff1d1dff" style={{marginRight: 30}} onPress={onEditIcon}/>
+            </View>
+          }
+          ListFooterComponent={<View style={{height: tabBarHeight}} />}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
         />
 
@@ -119,6 +168,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    paddingHorizontal: 16
   },
   recents: {
     fontSize: 30,

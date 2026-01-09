@@ -18,11 +18,11 @@ const platforms = [
   "all", "pc", "browser"
 ];
 function FilterBottomSheet(props) {
-  const {sheetRef, onFilters} = props
+  const {sheetRef, onFilters, remainingFilterItems} = props //always treat props as unstable which may change on every render. React’s rules are local, not global.
   const snapPoints = ['60%', '90%'];
 
-  const [selectedPlatform, setSelectedPlatform] = React.useState('all');
-  const [selectedGenres, setSelectedGenres] = React.useState([]);
+  const [selectedPlatform, setSelectedPlatform] = React.useState(remainingFilterItems.platform);
+  const [selectedGenres, setSelectedGenres] = React.useState(remainingFilterItems.genres);
   const renderBackdrop = React.useCallback(
       (props) => (
         <BottomSheetBackdrop
@@ -37,10 +37,16 @@ function FilterBottomSheet(props) {
 
   const divider = React.useMemo(() => <Divider thickness={2}/>, []);
   
-  const onPlatformSelect = (item) => {
+  //console.log("Remaining Items: ", remainingFilterItems);
+  React.useEffect(() => {
+    setSelectedPlatform(remainingFilterItems.platform);
+    setSelectedGenres(remainingFilterItems.genres);
+  }, [remainingFilterItems]);
+
+  const onPlatformSelect = useCallback((item) => {
     setSelectedPlatform(item);
-  }
- 
+  }, []);
+
   const onGenreSelect = (item) => {
     setSelectedGenres(prev =>
       prev.includes(item)
@@ -48,25 +54,27 @@ function FilterBottomSheet(props) {
         : [...prev, item]                 // select
     );
   };
-  const onClearAll = () => {
+  const onClearAll = useCallback(() => {
     sheetRef.current?.close();
     setSelectedPlatform('all');
     setSelectedGenres([]);
-  };
+    onFilters({selectedPlatform: 'all', selectedGenres: []});
+  }, [sheetRef, onFilters]); 
   const onApplyFilters = () => {
     // Implement filter application logic here
     sheetRef.current?.close();
     onFilters({selectedPlatform, selectedGenres});
   }
 
-  const PlatformBoxes = platforms.map((item, i) => {
+  const PlatformBoxes = React.useMemo(() => platforms.map((item, i) => {
     const isSelected = item === selectedPlatform;
+    console.log(item, isSelected);
     return (
       <TouchableOpacity style={[styles.box, isSelected && styles.selectedBox]} key={i} onPress={() => onPlatformSelect(item)}>
         <Text style={[styles.text, isSelected && styles.selectedText]}>{item}</Text>
       </TouchableOpacity>
     )
-  })
+  }), [selectedPlatform, onPlatformSelect]);
 
  
   const GenreBoxes = genres.map((item, i) => {
