@@ -163,7 +163,7 @@ export default function HomeTab({ navigation }) {
         axios.get(GAMES_URL, { params: queryParams }).then((res) => {setGames(res.data)}).catch(err => console.log(err))
     },[value, selectedPlatform, selectedGenres])
     
-    console.log(games)
+    //console.log(games)
     console.log(sortByItem, isUp)
     console.log("Filters applied:", filters.selectedPlatform, filters.selectedGenres);
 

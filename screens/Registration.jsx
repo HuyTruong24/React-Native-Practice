@@ -72,7 +72,7 @@ export default function Registration() {
                 </View>
                 <Button
                     title="Register"
-                    onPress={() => navigate.navigate(Constants.Home)}
+                    onPress={() => navigate.navigate(Constants.Main)}
                 />
 
                 <Button

@@ -64,7 +64,7 @@ export default function Login() {
           <Button
             title="Log in"
             onPress={() => {
-              navigate.replace(Constants.Home) //remove login scrren from the stack and navigate to home screen
+              navigate.replace(Constants.Main) //remove login scrren from the stack and navigate to home screen
             }}
             color="#d2d2d2ff"
             accessibilityLabel="Learn more about this button"

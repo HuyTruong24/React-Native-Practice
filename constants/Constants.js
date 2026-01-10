@@ -1,5 +1,6 @@
 const Login = "Login";
 const Registration = "Registration";
+const Main = "Main";
 const Home = "Home";
 const HomeTab = "HomeTab";
 const ContactTab = "ContactTab";
@@ -17,6 +18,8 @@ const Legal = "Legal";
 const Logout = "Logout";
 
 const ReactNative = "ReactNative";
+const Weather = "Weather";
+const Unknown = "Unknown";
 export default {
   Login,
   Registration,
@@ -35,4 +38,7 @@ export default {
   GiftCards,
   Legal,
   ReactNative,
+  Weather,
+  Unknown,
+  Main,
 };

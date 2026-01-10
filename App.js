@@ -13,6 +13,7 @@ import Logout from "./screens/Logout";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import Privacy from "./components/Privacy";
 import LogoutTemp from "./screens/LogoutTemp";
+import Main from "./screens/Home";
 
 const Stack = createNativeStackNavigator();
 const options = { headerShown: false };
@@ -23,7 +24,7 @@ function RootStack() {
       <Stack.Screen name={Constants.Login} component={Login} />
       <Stack.Screen name={Constants.Registration} component={Registration} />
       <Stack.Screen name={Constants.Logout} component={LogoutTemp} />
-      <Stack.Screen name={Constants.Home} component={Home} />
+      <Stack.Screen name={Constants.Main} component={Main} />
       <Stack.Screen
         name={Constants.GetHelp}
         component={GetHelp}
