@@ -119,20 +119,6 @@ function Contacts(props) {
     setSelectedContacts(prev => prev.filter(id => id !== contactId));
   }
 
-  /*const Item = ({name, phoneNumber}) => (
-    <View style={styles.item}>
-      <ImageBackground style={styles.userLogo}>
-        <Text style={styles.textLogo}>{name.at(0).toUpperCase()}</Text>
-      </ImageBackground>
-      <View>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.number}>{phoneNumber}</Text>
-      </View>
-      <View style={styles.info}>
-        <MaterialCommunityIcons name="information-outline" size={30} color="blue" onPress={onPressInfo} />
-      </View>
-    </View>
-  );*/
   return (
     <SafeAreaProvider>
       <SafeAreaView style={[styles.container, { backgroundColor: isOpen ? "#fff" : "#fff"}]}>

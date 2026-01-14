@@ -40,24 +40,6 @@ function MyBottomSheet(props) {
               <Text style={styles.number}>{phoneNumber}</Text>
             </View>
             <View style={styles.buttonContainer}>
-              {/*<TouchableHighlight {...touchableHighlightProps} style={styles.touchableHighlight}>
-                <View style={styles.touchableHighlightView}>
-                  <MaterialCommunityIcons name='message' size={30}/>
-                  <Text>message</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight {...touchableHighlightProps} style={styles.touchableHighlight}>
-                <View style={styles.touchableHighlightView}>
-                  <MaterialIcons name='call' size={30}/>
-                  <Text>call</Text>
-                </View>
-                </TouchableHighlight>
-              <TouchableHighlight  {...touchableHighlightProps} style={styles.touchableHighlight}>
-                <View style={styles.touchableHighlightView}>
-                  <MaterialCommunityIcons name='video' size={30}/>
-                  <Text>video</Text>
-                </View>
-              </TouchableHighlight>*/}
               <ContactButton 
                 buttonName="message" 
                 iconComponent={ <Entypo name='message' size={30}/> } 
