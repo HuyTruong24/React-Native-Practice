@@ -4,7 +4,7 @@ import Constants from '../constants/Constants';
 import { Feather, MaterialIcons } from '@expo/vector-icons' 
 import axios from 'axios';
 import FilterBottomSheet from '../components/FilterBottomSheet';
-
+import { getValueFor } from '../storage/SecureStorage';
 const BASE_URL = "https://www.freetogame.com/api"
 const GAMES_URL = BASE_URL + "/games"
 
@@ -186,6 +186,7 @@ export default function HomeTab({ navigation }) {
             </View>
         </TouchableWithoutFeedback>
     )), [filterItems]);
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
             <View style={{ flex: 1, padding: 16 }}>

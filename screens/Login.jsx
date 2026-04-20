@@ -13,6 +13,8 @@ import React, { useState } from "react";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Constants from "../constants/Constants";
+import { generateRandomToken } from "../utils/randomToken";
+import { save } from "../storage/SecureStorage";
 export default function Login() {
     const navigate = useNavigation();
     const [emailValue, onChangeText] = useState("");
@@ -63,7 +65,9 @@ export default function Login() {
           </View>
           <Button
             title="Log in"
-            onPress={() => {
+            onPress={async () => {
+              const token = generateRandomToken(64)
+              await save(Constants.Token, token);
               navigate.replace(Constants.Main) //remove login scrren from the stack and navigate to home screen
             }}
             color="#d2d2d2ff"

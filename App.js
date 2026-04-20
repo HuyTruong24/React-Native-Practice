@@ -15,6 +15,8 @@ import Privacy from "./components/Privacy";
 import LogoutTemp from "./screens/LogoutTemp";
 import Main from "./screens/Home";
 
+import { getValueFor, save } from "./storage/SecureStorage";
+
 const Stack = createNativeStackNavigator();
 const options = { headerShown: false };
 

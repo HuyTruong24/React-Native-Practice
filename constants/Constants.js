@@ -20,6 +20,7 @@ const Logout = "Logout";
 const ReactNative = "ReactNative";
 const Weather = "Weather";
 const Unknown = "Unknown";
+const Token = "secure-access-token";
 export default {
   Login,
   Registration,
